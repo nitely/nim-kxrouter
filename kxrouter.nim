@@ -12,9 +12,9 @@ proc newViewParams: ViewParams =
   newTable[string, string]()
 
 type 
-  ViewLoadUnload* = proc (ctx: ViewContext) {.closure, raises: [].}
+  ViewEventCallback* = proc (ctx: ViewContext) {.closure, raises: [].}
   ViewContext* = ref object
-    mount, tick, load, unload: seq[ViewLoadUnload]
+    mount, tick, load, unload: seq[ViewEventCallback]
     loaded, unloaded: bool
     path*, qry*: string
     params*: ViewParams
@@ -43,26 +43,26 @@ proc newViewContainer: ViewContainer {.raises: [].} =
 proc isUnloaded*(ctx: ViewContext): bool {.raises: [].} =
   ctx.unloaded
 
-proc onMount*(ctx: ViewContext, cb: ViewLoadUnload) {.raises: [].} =
+proc onMount*(ctx: ViewContext, cb: ViewEventCallback) {.raises: [].} =
   if ctx.loaded:
     return
   doAssert cb notin ctx.mount
   ctx.mount.add cb
 
-proc onNextTick*(ctx: ViewContext, cb: ViewLoadUnload) {.raises: [].} =
+proc onNextTick*(ctx: ViewContext, cb: ViewEventCallback) {.raises: [].} =
   if ctx.unloaded:
     return
   if cb notin ctx.tick:
     ctx.tick.add cb
 
-proc onLoad*(ctx: ViewContext, cb: ViewLoadUnload) {.raises: [].} =
+proc onLoad*(ctx: ViewContext, cb: ViewEventCallback) {.raises: [].} =
   if ctx.loaded:
     return
   doAssert cb notin ctx.load
   ctx.load.add cb
   cb ctx
 
-proc onUnload*(ctx: ViewContext, cb: ViewLoadUnload) {.raises: [].} =
+proc onUnload*(ctx: ViewContext, cb: ViewEventCallback) {.raises: [].} =
   if ctx.loaded:
     return
   doAssert cb notin ctx.unload
