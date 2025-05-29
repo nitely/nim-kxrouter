@@ -41,11 +41,11 @@ The events run for the given view. There are no global events. The received `ctx
 - Use `onLoad` for initialization.
 - Use `onUnload` for cleaning up.
 - Use `onMount` to run in the next post-render only once.
-- Use `onNextTick` to run in the next post-render. Useful for changing some element after fetching resources, for example scrolling down an element.
+- Use `onNextTick` to run in the next post-render. Useful for changing some DOM element after fetching resources, for example scrolling down the element.
 
 ## ajaxGet/fetch
 
-When fetching resources, the "done" callback may run after the user has navigating to a different route. Use `if ctx.isUnloaded: return` to return early and avoid undesired side-effects.
+When fetching resources, the "done" callback may run after the user has navigated to a different route. Use `if ctx.isUnloaded: return` to return early and avoid undesired side-effects.
 
 ```nim
 include pkg/karax/prelude
