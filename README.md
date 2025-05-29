@@ -34,13 +34,11 @@ kxRouter(@[
 
 ## Events
 
-The event callbacks need to be registered the first time the view is rendered. Except for `onNextTick` which can be used any time.
-
 The events run for the given view. There are no global events. The received `ctx` callback parameter is always the one used to register the callback.
 
-- Use `onLoad` for initialization.
-- Use `onUnload` for cleaning up.
-- Use `onMount` to run in the next post-render only once.
+- Use `onLoad` for initialization. This runs when the route/view is visited.
+- Use `onUnload` for cleaning up. This runs when the route/view is exited.
+- Use `onMount` to run in the next post-render after visiting the route/view.
 - Use `onNextTick` to run in the next post-render. Useful for changing some DOM element after fetching resources, for example scrolling down the element.
 
 ## ajaxGet/fetch
