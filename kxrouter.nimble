@@ -1,6 +1,6 @@
 # Package
 
-version = "0.1.0"
+version = "0.1.1"
 author = "Esteban Castro Borsani (@nitely)"
 description = "A karax router with life-time events"
 license = "MIT"
