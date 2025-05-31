@@ -74,9 +74,10 @@ proc doMount(ctx: ViewContext) {.raises: [].} =
   ctx.mount.setLen 0
 
 proc doNextTick(ctx: ViewContext) {.raises: [].} =
-  for cb in ctx.tick:
-    cb ctx
+  let tick = ctx.tick
   ctx.tick.setLen 0
+  for cb in tick:
+    cb ctx
 
 proc doLoad(ctx: ViewContext) {.raises: [].} =
   doAssert not ctx.loaded
@@ -339,6 +340,17 @@ when isMainModule:
     ctx.onNextTick proc (ctx: ViewContext) = inc count
     ctx.doNextTick()
     doAssert count == 2
+  block:
+    var count = 0
+    let ctx = newViewContext()
+    ctx.onNextTick proc (ctx: ViewContext) =
+      ctx.onNextTick proc (ctx: ViewContext) = inc count
+    ctx.doNextTick()
+    doAssert count == 0
+    ctx.doNextTick()
+    doAssert count == 1
+    ctx.doNextTick()
+    doAssert count == 1
   block:
     # "" and "/" should not match 
     doAssert countSlashes("") == 0
